@@ -1,0 +1,113 @@
+{
+    "Print to console": {
+        "scope": "javascript,javascriptreact,typescript,typescriptreact",
+        "prefix": "lgg",
+        "body": ["console.log($1);", "$2"],
+        "description": "Log output to console"
+    },
+    "Import": {
+        "scope": "javascript,javascriptreact,typescript,typescriptreact",
+        "prefix": "imp",
+        "body": ["import ${2:{ $1 \\}} from \"${3:react}\";"]
+    },
+    "MUI Import": {
+        "scope": "typescriptreact",
+        "prefix": "mui",
+        "body": ["import { ${1:Component} } from \"@mui/material\";"]
+    },
+    "MUI Import Icon": {
+        "scope": "typescriptreact",
+        "prefix": "icon",
+        "body": ["import ${1:Name}Icon from \"@mui/icons-material/${1:Name}\""]
+    },
+    "HTML Content": {
+        "scope": "typescriptreact",
+        "prefix": "html",
+        "body": [
+            "{/* eslint-disable-next-line react/no-danger */}",
+            "<${1:span} dangerouslySetInnerHTML={{ __html: $0 }} />"
+        ]
+    },
+    "useEffect": {
+        "scope": "typescriptreact",
+        "prefix": "effect",
+        "body": ["React.useEffect(() => {", "    $0", "}, [$1]);"]
+    },
+    "useState": {
+        "scope": "typescriptreact",
+        "prefix": "state",
+        "body": ["const [${1}, set${1/(.*)/${1:/capitalize}/}] = React.useState<$2>($0);"]
+    },
+    "useStyles": {
+        "scope": "typescriptreact",
+        "prefix": "styles",
+        "body": [
+            "import { UseStyleFn, makeStyles } from \"@thiswayup/twu.mui.tools\";",
+            "import { Theme } from \"@thiswayup/twu.mui.types\";",
+            "",
+            "export const useStyles: UseStyleFn = makeStyles((theme: Theme) => ({",
+            "    ${1:root}: {",
+            "        $0",
+            "    },",
+            "}));"
+        ]
+    },
+    "Functional Component": {
+        "scope": "typescriptreact",
+        "prefix": "rcc",
+        "body": [
+            "import React from \"react\";",
+            "",
+            "export type ${1:${TM_FILENAME/(.+)[.].+|.*/$1/}}Props = {};",
+            "",
+            "export type $1Component = React.FC<$1Props>;",
+            "",
+            "export const $1:$1Component = (): JSX.Element => {",
+            "    return (",
+            "        <div>$1$0</div>",
+            "    );",
+            "};"
+        ]
+    },
+    "Functional Component (with children)": {
+        "scope": "typescriptreact",
+        "prefix": "rccwc",
+        "body": [
+            "import React from \"react\";",
+            "",
+            "export type ${1:${TM_FILENAME/(.+)[.].+|.*/$1/}}Props = {};",
+            "",
+            "export type $1Component = React.FC<React.PropsWithChildren<$1Props>>;",
+            "",
+            "export const $1:$1Component = ({ children }): JSX.Element => {",
+            "    return (",
+            "        <div>{children}</div>",
+            "    );",
+            "};"
+        ]
+    },
+    "Context": {
+        "scope": "typescriptreact",
+        "prefix": "rccxt",
+        "body": [
+            "import React from \"react\";",
+            "",
+            "type ${1:ContextName}ContextProps = {};",
+            "export const ${1:ContextName}Context = React.createContext<${1:ContextName}ContextProps>({});",
+            "",
+            "type ${1:ContextName}ContextProviderProps = {};",
+            "type ${1:ContextName}ContextProviderComponent = React.FC<React.PropsWithChildren<${1:ContextName}ContextProviderProps>>;",
+            "",
+            "export const ${1:ContextName}ContextProvider: ${1:ContextName}ContextProviderComponent = ({ children }): JSX.Element => {",
+            "    const defaultValue: ${1:ContextName}ContextProps = {};",
+            "",
+            "    return <${1:ContextName}Context.Provider value={defaultValue}>{children}</${1:ContextName}Context.Provider>;",
+            "};"
+        ]
+    },
+    "Zustand State Var": {
+        "scope": "typescriptreact",
+        "prefix": "zvar",
+        "body": ["const ${1:varname} = useStore((state) => state.$1);"]
+    }
+}
