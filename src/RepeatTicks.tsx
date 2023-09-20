@@ -14,10 +14,6 @@ export const RepeatTicks: RepeatTicksComponent = ({ watch, setValue }): JSX.Elem
     const repeat = watch("repeat");
     const repeatTicks = watch("repeatTicks");
 
-    React.useEffect(() => {
-        setValue("repeatTicks", []);
-    }, [repeat]);
-
     const onTickChange = (i) => (ev, checked) => {
         setValue("repeatTicks", checked ? [...repeatTicks, i] : repeatTicks.filter((t) => t !== i));
     };

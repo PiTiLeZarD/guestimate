@@ -6,16 +6,18 @@ import { RepeatingTransaction } from "./utils";
 
 export type RepeatingTransactionFormProps = {
     onSubmit: SubmitHandler<RepeatingTransaction>;
+    edit?: RepeatingTransaction;
 };
 
 export type RepeatingTransactionFormComponent = React.FunctionComponent<RepeatingTransactionFormProps>;
 
-export const RepeatingTransactionForm: RepeatingTransactionFormComponent = ({ onSubmit }): JSX.Element => {
+export const RepeatingTransactionForm: RepeatingTransactionFormComponent = ({ onSubmit, edit }): JSX.Element => {
     const defaultValues: Partial<RepeatingTransaction> = {
         amount: 0,
         repeat: "week",
         repeatCount: 1,
         repeatTicks: [],
+        ...(edit || {}),
     };
     const { register, handleSubmit, watch, setValue } = useForm<RepeatingTransaction>({
         defaultValues,

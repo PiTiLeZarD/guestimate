@@ -1,17 +1,18 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import { IconButton, List, ListItem, ListItemText } from "@mui/material";
-import React from "react";
+import { IconButton, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import React, { SyntheticEvent } from "react";
 import { RepeatLabel } from "./RepeatLabel";
 import { useStore } from "./store";
 import { RepeatingTransaction } from "./utils";
 
 export type RepeatingTransactionListProps = {
     transactions: RepeatingTransaction[];
+    onClick: (t: RepeatingTransaction) => (ev: SyntheticEvent) => void;
 };
 
 export type RepeatingTransactionListComponent = React.FC<RepeatingTransactionListProps>;
 
-export const RepeatingTransactionList: RepeatingTransactionListComponent = ({ transactions }): JSX.Element => {
+export const RepeatingTransactionList: RepeatingTransactionListComponent = ({ transactions, onClick }): JSX.Element => {
     const setRepeatingTransactions = useStore((state) => state.setRepeatingTransactions);
     const repeatingTransactions = useStore((state) => state.repeatingTransactions);
 
@@ -31,9 +32,12 @@ export const RepeatingTransactionList: RepeatingTransactionListComponent = ({ tr
                             </IconButton>
                         }
                     >
-                        <ListItemText>
-                            {t.label}: {t.amount} <RepeatLabel transaction={t} />
-                        </ListItemText>
+                        <ListItemButton onClick={onClick(t)}>
+                            <ListItemText
+                                primary={`${t.label}: ${t.amount}`}
+                                secondary={<RepeatLabel transaction={t} />}
+                            />
+                        </ListItemButton>
                     </ListItem>
                 ))}
         </List>

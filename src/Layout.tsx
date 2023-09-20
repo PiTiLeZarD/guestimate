@@ -14,6 +14,7 @@ export type LayoutComponent = React.FunctionComponent<LayoutProps>;
 
 export const Layout: LayoutComponent = (): JSX.Element => {
     const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
+    const [selectedTransaction, setSelectedTransaction] = React.useState<RepeatingTransaction | undefined>(undefined);
     const { startingPoint, setStartingPoint, repeatingTransactions, setRepeatingTransactions } = useStore(
         (state) => ({
             startingPoint: state.startingPoint,
@@ -26,16 +27,26 @@ export const Layout: LayoutComponent = (): JSX.Element => {
 
     const onSubmit = (data: RepeatingTransaction) => {
         setRepeatingTransactions([
-            ...repeatingTransactions,
+            ...repeatingTransactions.filter((t) => t.label !== data.label),
             { ...data, amount: +data.amount, repeatCount: +data.repeatCount },
         ]);
+        onDialogClose();
+    };
+
+    const onClick = (t: RepeatingTransaction) => (ev) => {
+        setDialogOpen(true);
+        setSelectedTransaction(t);
+    };
+
+    const onDialogClose = () => {
+        setSelectedTransaction(undefined);
         setDialogOpen(false);
     };
 
     return (
         <>
-            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-                <RepeatingTransactionForm onSubmit={onSubmit} />
+            <Dialog open={dialogOpen} onClose={onDialogClose}>
+                <RepeatingTransactionForm onSubmit={onSubmit} edit={selectedTransaction} />
             </Dialog>
             <Stack spacing={4}>
                 <Paper elevation={2} sx={{ padding: "1em" }}>
@@ -58,6 +69,7 @@ export const Layout: LayoutComponent = (): JSX.Element => {
                         <Stack spacing={2}>
                             <Typography variant="h5">Income</Typography>
                             <RepeatingTransactionList
+                                onClick={onClick}
                                 transactions={repeatingTransactions.filter((t) => t.amount > 0)}
                             />
                         </Stack>
@@ -66,6 +78,7 @@ export const Layout: LayoutComponent = (): JSX.Element => {
                         <Stack spacing={2}>
                             <Typography variant="h5">Expense</Typography>
                             <RepeatingTransactionList
+                                onClick={onClick}
                                 transactions={repeatingTransactions.filter((t) => t.amount < 0)}
                             />
                         </Stack>
