@@ -14,7 +14,7 @@ export const RepeatLabel: RepeatLabelComponent = ({ transaction }): JSX.Element 
             Repeats every {transaction.repeatCount > 1 ? transaction.repeatCount : ""} {transaction.repeat}
             {transaction.repeatCount > 1 ? "s" : ""} on{" "}
             {transaction.repeat == "week"
-                ? transaction.repeatTicks.map((t) => days[t]).join(", ")
+                ? transaction.repeatTicks.map((t) => days[t - 1]).join(", ")
                 : transaction.repeatTicks.join(", ")}
         </Typography>
     );
